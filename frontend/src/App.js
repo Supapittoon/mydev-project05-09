@@ -83,15 +83,40 @@ export default function App() {
         <p> จำนวนครั้งในการกด </p>
         <button className=" ">{count}</button>
       </div> */}
+
       <div>
-        <h3 className="font-bold">User List</h3>
-        {_.map(users, (eachUser, index) => (
-          <div>
-            {index + 1}. - {eachUser?.name}
-          </div>
-        ))}
+        <h3 className="font-bold"> User List</h3>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>ลำดับที่</TableCell>
+                <TableCell>ชื่อ</TableCell>
+                <TableCell>แผนก</TableCell>
+                <TableCell>ดำเนินการ</TableCell>
+              </TableRow>
+            </TableHead>
+            {_.map(users, (eachData, index) => (
+              <TableBody>
+                <TableCell align="left">{index + 1}</TableCell>
+                <TableCell align="left">{eachData.name}</TableCell>
+                <TableCell align="left">{eachData.department}</TableCell>
+                <TableCell align="left">
+                  <Button
+                    color="error"
+                    variant="contained"
+                    size="small"
+                    onClick={() => handleDeleteUser(eachData?._id)}
+                  >
+                    {" "}
+                    ลบ{" "}
+                  </Button>
+                </TableCell>
+              </TableBody>
+            ))}
+          </Table>
+        </TableContainer>
       </div>
-      ghghghghghghgh
       {/* <div>
         <h3 className="font-bold">User List</h3>
         <Table>
