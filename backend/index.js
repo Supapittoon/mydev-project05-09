@@ -1,5 +1,4 @@
 const userRouter = require("./routes/user.routes")
-
 const User = require("./models/User")
 const express = require("express")
 const app = express()
@@ -28,9 +27,9 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cors({}))
 app.use("/api/user", userRouter)
 
-app.get("/", (req, res) => {
-  res.send("Hello World!")
-})
+// app.get("/", (req, res) => {
+//   res.send("Hello World!")
+// })
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
