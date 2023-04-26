@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react"
-import Box from "@mui/material/Box"
 import TextField from "@mui/material/TextField"
 import Card from "@mui/material/Card"
-import CardActions from "@mui/material/CardActions"
 import CardContent from "@mui/material/CardContent"
 import Button from "@mui/material/Button"
-import Typography from "@mui/material/Typography"
 import { useForm, Controller } from "react-hook-form"
 import axios from "axios"
 import { Link, useNavigate } from "react-router-dom"
+import Box from "@mui/material/Box"
+import InputLabel from "@mui/material/InputLabel"
+import MenuItem from "@mui/material/MenuItem"
+import FormControl from "@mui/material/FormControl"
+import Select from "@mui/material/Select"
+import _ from "lodash"
 
 export default function Fromdata({
   setIsReady,
@@ -18,19 +21,30 @@ export default function Fromdata({
   type = "",
   handleClose,
 }) {
-  const { handleSubmit, control, errors } = useForm()
+  const { handleSubmit, control } = useForm()
+  const [namedepartment, setNamedepartment] = useState([])
+
   const navigate = useNavigate()
 
   console.log("selectuser in from data", type, selectuser)
+  const getDepartmentUser = () => {
+    // setIsReady(false)
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/department`)
+      .then((res) => {
+        setNamedepartment(res?.data?.rows)
+        console.log("test after", namedepartment)
+      })
+      .catch((error) => {
+        console.error("Error", error?.message)
+      })
 
-  const bull = (
-    <Box
-      component="span"
-      sx={{ display: "inline-block", mx: "5px", transform: "scale(0.8)" }}
-    >
-      •
-    </Box>
-  )
+    // setIsReady(true)
+  }
+  useEffect(() => {
+    getDepartmentUser()
+    return () => {}
+  }, [])
 
   const postData = (data) => {
     axios
@@ -84,84 +98,107 @@ export default function Fromdata({
     }
   }
   return (
-    <div className="flex justify-center  ">
-      <Card sx={{ minWidth: 500 }}>
-        <CardContent>
-          <h3>ข้อมูลพนักงาน1</h3>
-          <br />
-          <form onSubmit={handleSubmit(submitData)}>
-            <div>
-              <Controller
-                name="name"
-                control={control}
-                defaultValue={selectuser ? selectuser?.name : ""}
-                rules={{ required: false }}
-                render={({ field }) => (
-                  <div className="grid grid-rows -">
+    <div>
+      <div className="flex justify-center  ">
+        <Card sx={{ minWidth: 500 }}>
+          <CardContent>
+            <h3>ข้อมูลพนักงาน</h3>
+            <br />
+            <form onSubmit={handleSubmit(submitData)}>
+              <div>
+                <Controller
+                  name="name"
+                  control={control}
+                  defaultValue={selectuser ? selectuser?.name : ""}
+                  rules={{ required: false }}
+                  render={({ field }) => (
+                    <div className="grid grid-rows -">
+                      <TextField
+                        {...field}
+                        label="ชื่อ-นามสกุล "
+                        fullWidth
+                        size={"small"}
+                        helperText={"กรุณาใส่ข้อมูล"}
+                      />
+                    </div>
+                  )}
+                />
+                <Controller
+                  name="department"
+                  control={control}
+                  defaultValue={selectuser ? selectuser?.department : ""}
+                  rules={{ required: false }}
+                  render={({ field }) => (
+                    <Box sx={{ minWidth: 120 }}>
+                      <FormControl fullWidth>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          {...field}
+                        >
+                          {_.map(namedepartment, (eachData, index) => (
+                            <MenuItem value={eachData?._id}>
+                              {eachData?.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Box>
+                  )}
+                />
+                <Controller
+                  name="age"
+                  control={control}
+                  defaultValue={selectuser ? selectuser?.age : ""}
+                  rules={{ required: false }}
+                  render={({ field }) => (
                     <TextField
                       {...field}
-                      label="ชื่อ-นามสกุล "
+                      label="อายุ"
+                      fullWidth
+                      size={"small"}
+                      type="number"
+                      helperText={"กรุณาใส่ข้อมูล"}
+                    />
+                  )}
+                />
+                <Controller
+                  name="telephone"
+                  control={control}
+                  defaultValue={selectuser ? selectuser?.telephone : ""}
+                  rules={{ required: false }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="เบอร์โทรศัพท์"
                       fullWidth
                       size={"small"}
                       helperText={"กรุณาใส่ข้อมูล"}
                     />
-                  </div>
-                )}
-              />
-              <Controller
-                name="department"
-                control={control}
-                defaultValue={selectuser ? selectuser?.department : ""}
-                rules={{ required: false }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="แผนก"
-                    fullWidth
-                    size={"small"}
-                    helperText={"กรุณาใส่ข้อมูล"}
-                  />
-                )}
-              />
-              <Controller
-                name="age"
-                control={control}
-                defaultValue={selectuser ? selectuser?.age : ""}
-                rules={{ required: false }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="อายุ"
-                    fullWidth
-                    size={"small"}
-                    type="number"
-                    helperText={"กรุณาใส่ข้อมูล"}
-                  />
-                )}
-              />
-              <Controller
-                name="telephone"
-                control={control}
-                defaultValue={selectuser ? selectuser?.telephone : ""}
-                rules={{ required: false }}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    label="เบอร์โทรศัพท์"
-                    fullWidth
-                    size={"small"}
-                    helperText={"กรุณาใส่ข้อมูล"}
-                  />
-                )}
-              />
+                  )}
+                />
 
-              <Button variant="contained" type="submit">
-                บันทึก
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+                <Button variant="contained" type="submit">
+                  บันทึก
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+      <br />
+      <div className="flex justify-center">
+        <Link to="/">
+          <Button
+            variant="contained"
+            size="large"
+            color="success"
+            onClick={handleClose}
+          >
+            Back
+          </Button>
+        </Link>
+      </div>
     </div>
   )
 }

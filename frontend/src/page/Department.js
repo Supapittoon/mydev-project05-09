@@ -21,11 +21,12 @@ import DialogContentText from "@mui/material/DialogContentText"
 import DialogTitle from "@mui/material/DialogTitle"
 // import Navbar from "../Components/Navbar"
 import { Link } from "react-router-dom"
-
+import Department from "../page/Department"
+import Fromdepartment from "./Formdepartment"
 //
 
 export default function Home() {
-  const [users, setUsers] = useState([])
+  const [usersdepartment, setUsersdepartment] = useState([])
   const [selectuser, setSelectuser] = useState({})
   const [isReady, setIsReady] = useState(false)
 
@@ -33,14 +34,14 @@ export default function Home() {
 
   const [open, setOpen] = React.useState(false)
 
-  const getAllUser = () => {
+  const getAllUserdepartment = () => {
     // setIsReady(false)
     axios
-      .get(`${process.env.REACT_APP_API_URL}/user`)
+      .get(`${process.env.REACT_APP_API_URL}/department`)
       .then((res) => {
-        setUsers(res?.data?.rows)
+        setUsersdepartment(res?.data?.rows)
         setIsReady(true)
-        console.log("User", res?.data?.rows)
+        console.log("Usersdepartment1", usersdepartment)
       })
       .catch((error) => {
         console.error("Error", error?.message)
@@ -58,7 +59,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    getAllUser()
+    getAllUserdepartment()
     return () => {}
   }, [isReady])
 
@@ -74,9 +75,9 @@ export default function Home() {
     const confirm = window.confirm("ยืนยันการลบข้อมูล")
     if (confirm) {
       axios
-        .delete("http://localhost:3001/api/user/" + userId)
+        .delete("http://localhost:3001/api/department/" + userId)
         .then((res) => {
-          getAllUser()
+          getAllUserdepartment()
         })
         .catch((error) => {
           alert(error?.message)
@@ -90,33 +91,30 @@ export default function Home() {
       <div className=" ">
         <h3 className="font-bold flex  justify-center  text-xl font-sans ...">
           {" "}
-          User List{" "}
+          ชื่อแผนก{" "}
         </h3>
         <div className="float-right ...  my-4 ">
-          <Link to="/Formdata">
+          <Link to="/Formdepartment">
             <Button variant="contained" color="success" size="large">
               {" "}
               ADD
             </Button>
           </Link>
         </div>
+
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
-              <TableRow className="bg-cyan-600  font-mono ...">
+              <TableRow className="bg-blue-300  font-mono ...">
                 <TableCell>ลำดับที่</TableCell>
-                <TableCell>ชื่อ-นามสกุล</TableCell>
                 <TableCell>แผนก</TableCell>
                 <TableCell>ดำเนินการ</TableCell>
               </TableRow>
             </TableHead>
-            {_.map(users, (eachData, index) => (
+            {_.map(usersdepartment, (eachData, index) => (
               <TableBody>
                 <TableCell align="left">{index + 1}</TableCell>
                 <TableCell align="left">{eachData.name}</TableCell>
-                <TableCell align="left">
-                  {eachData.department?.name || "-"}
-                </TableCell>
                 <TableCell align="left">
                   <div className=" p-2">
                     <Button
@@ -152,7 +150,7 @@ export default function Home() {
                       </DialogTitle>
                       <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                          <Fromdata
+                          <Fromdepartment
                             selectuser={selectuser}
                             type={"edit"}
                             handleClose={handleClose}

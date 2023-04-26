@@ -1,5 +1,6 @@
 const userRouter = require("./routes/user.routes")
 const User = require("./models/User")
+const departmentRouter = require("./routes/department.routes")
 const express = require("express")
 const app = express()
 
@@ -26,6 +27,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors({}))
 app.use("/api/user", userRouter)
+app.use("/api/department", departmentRouter)
 
 // app.get("/", (req, res) => {
 //   res.send("Hello World!")
