@@ -72,11 +72,11 @@ export default function Fromdepartment({
     }
   }
   return (
-    <div>
-      <div className="flex justify-center  ">
+    <div className="w-full  p-20">
+      
         <Card sx={{ minWidth: 500 }}>
           <CardContent>
-            <h3>ข้อมูลพนักงาน</h3>
+            <h3>ข้อมูลลูกค้า</h3>
             <br />
             <form onSubmit={handleSubmit(submitData)}>
               <div>
@@ -86,7 +86,7 @@ export default function Fromdepartment({
                   defaultValue={selectuser ? selectuser?.name : ""}
                   rules={{ required: false }}
                   render={({ field }) => (
-                    <div className="grid grid-rows -">
+                    <div className="">
                       <TextField
                         {...field}
                         label="ชื่อ-นามสกุล "
@@ -95,6 +95,25 @@ export default function Fromdepartment({
                         helperText={"กรุณาใส่ข้อมูล"}
                       />
                     </div>
+                    
+                  )}
+                />
+                    <Controller
+                  name="telephone"
+                  control={control}
+                  defaultValue={selectuser ? selectuser?.name : ""}
+                  rules={{ required: false }}
+                  render={({ field }) => (
+                    <div className="">
+                      <TextField
+                        {...field}
+                        label="เบอร์โทรศัพท์ "
+                        fullWidth
+                        size={"small"}
+                        helperText={"กรุณาใส่ข้อมูล"}
+                      />
+                    </div>
+                    
                   )}
                 />
                 <Button variant="contained" type="submit">
@@ -104,7 +123,6 @@ export default function Fromdepartment({
             </form>
           </CardContent>
         </Card>
-      </div>
       <br />
       <div className="flex justify-center">
         <Link to="/">

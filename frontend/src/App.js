@@ -6,23 +6,29 @@ import Home from "./page/Home"
 import Fromdata from "./Components/Fromdata"
 import Department from "./page/Department"
 import Formdepartment from "./page/Formdepartment"
-import Showuser from "./page/Showuser"
+import Sidebar from "./Components/Sidebar"
+import Example from "../src/Components/Navbar"
+import Showdata from "./page/Showdata"
 // import Navbar from "./Components/Navbar"
 export default function App() {
   return (
-    <div>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
+    <BrowserRouter>
+      <div className="App w-full">
+        <Example />
+        <div className="flex">
+          <Sidebar />
+          <Routes>
+            {/* <Route path="/" element={<Layout />}> */}
             <Route index element={<Home />} />
             <Route path="/Formdata" element={<Fromdata />} />
             <Route path="/Department" element={<Department />} />
             <Route path="/Formdepartment" element={<Formdepartment />} />
-            <Route path="/Showuser" element={<Showuser />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
+            <Route path="/Showdata" element={<Showdata />} />
+            {/* </Route> */}
+          </Routes>
+        </div>
+      </div>
+    </BrowserRouter>
   )
 }
 

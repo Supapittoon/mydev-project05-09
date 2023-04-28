@@ -30,6 +30,7 @@ export default function Home() {
   const [isReady, setIsReady] = useState(false)
 
   console.log("selectuser", selectuser)
+  console.log("Data", users)
 
   const [open, setOpen] = React.useState(false)
 
@@ -86,90 +87,92 @@ export default function Home() {
   }
 
   return (
-    <div className="mx-10">
-      <div className=" ">
-        <h3 className="font-bold flex  justify-center  text-xl font-sans ...">
-          {" "}
-          User List{" "}
-        </h3>
-        <div className="float-right ...  my-4 ">
-          <Link to="/Formdata">
-            <Button variant="contained" color="success" size="large">
-              {" "}
-              ADD
-            </Button>
-          </Link>
-        </div>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow className="bg-cyan-600  font-mono ...">
-                <TableCell>ลำดับที่</TableCell>
-                <TableCell>ชื่อ-นามสกุล</TableCell>
-                <TableCell>แผนก</TableCell>
-                <TableCell>ดำเนินการ</TableCell>
-              </TableRow>
-            </TableHead>
-            {_.map(users, (eachData, index) => (
-              <TableBody>
-                <TableCell align="left">{index + 1}</TableCell>
-                <TableCell align="left">{eachData.name}</TableCell>
-                <TableCell align="left">
-                  {eachData.department?.name || "-"}
-                </TableCell>
-                <TableCell align="left">
-                  <div className=" p-2">
-                    <Button
-                      color="error"
-                      variant="contained"
-                      size="small"
-                      onClick={() => handleDeleteUser(eachData?._id)}
-                    >
-                      {" "}
-                      delete{" "}
-                    </Button>
-
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      size="small"
-                      onClick={() => {
-                        setSelectuser(eachData)
-                        handleClickOpen(eachData?._id)
-                      }}
-                    >
-                      {" "}
-                      Edit{" "}
-                    </Button>
-                    <Dialog
-                      open={open}
-                      onClose={handleClose}
-                      aria-labelledby="alert-dialog-title"
-                      aria-describedby="alert-dialog-description"
-                    >
-                      <DialogTitle id="alert-dialog-title">
-                        {"Edit  Form"}
-                      </DialogTitle>
-                      <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                          <Fromdata
-                            selectuser={selectuser}
-                            type={"edit"}
-                            handleClose={handleClose}
-                            isReady={isReady}
-                            setIsReady={setIsReady}
-                          />
-                        </DialogContentText>
-                      </DialogContent>
-                      <DialogActions></DialogActions>
-                    </Dialog>
-                  </div>
-                </TableCell>
-              </TableBody>
-            ))}
-          </Table>
-        </TableContainer>
+    <div className=" w-full px-10">
+      <h3 className="font-bold flex  justify-center  my-4 text-xl font-sans ...">
+        {" "}
+        รายการสินค้า{" "}
+      </h3>
+      <div className="float-right ...  my-4 ">
+        <Link to="/Formdata">
+          <Button variant="contained" color="success" size="large">
+            {" "}
+            เพิ่มสินค้า
+          </Button>
+        </Link>
       </div>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow className="bg-cyan-600  font-mono ...">
+              <TableCell>ลำดับที่</TableCell>
+              {/* <TableCell>รูปภาพ</TableCell> */}
+              <TableCell>ชื่อสินค้า</TableCell>
+              <TableCell>ราคา</TableCell>
+              <TableCell>ดำเนินการ</TableCell>
+            </TableRow>
+          </TableHead>
+          {_.map(users, (eachData, index) => (
+            <TableBody>
+              <TableCell align="left">{index + 1}</TableCell>
+              <TableCell align="left">{eachData.name}</TableCell>
+              <TableCell align="left">{eachData.cost}</TableCell>
+              
+
+              {/* <TableCell align="left">
+                {eachData.department?.name || "-"}
+              </TableCell> */}
+              <TableCell align="left">
+                <div className=" p-2">
+                  <Button
+                    color="error"
+                    variant="contained"
+                    size="small"
+                    onClick={() => handleDeleteUser(eachData?._id)}
+                  >
+                    {" "}
+                    delete{" "}
+                  </Button>
+
+                  <Button
+                    color="secondary"
+                    variant="contained"
+                    size="small"
+                    onClick={() => {
+                      setSelectuser(eachData)
+                      handleClickOpen(eachData?._id)
+                    }}
+                  >
+                    {" "}
+                    Edit{" "}
+                  </Button>
+                  <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogTitle id="alert-dialog-title">
+                      {"Edit  Form"}
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        <Fromdata
+                          selectuser={selectuser}
+                          type={"edit"}
+                          handleClose={handleClose}
+                          isReady={isReady}
+                          setIsReady={setIsReady}
+                        />
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions></DialogActions>
+                  </Dialog>
+                </div>
+              </TableCell>
+            </TableBody>
+          ))}
+        </Table>
+      </TableContainer>
     </div>
   )
 }

@@ -1,11 +1,21 @@
 import { Outlet, Link } from "react-router-dom"
 import Navbar from "../Components/Navbar"
-
+import Sidebar from "../Components/Sidebar"
 
 const Layout = () => {
   return (
     <div>
-      <Navbar />
+      <div className=" ">
+        <div className="flex">
+          <div className="">
+            <Sidebar />
+          </div>
+          <div className="w-full">
+            <Navbar />
+          </div>
+        </div>
+      </div>
+
       <>
         <nav>
           <ul>

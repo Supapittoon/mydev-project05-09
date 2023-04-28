@@ -6,8 +6,7 @@ const schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Department",
   },
-  age: Number,
-  telephone: String,
+  cost: Number,
 })
 
 const User = mongoose.model("User", schema)

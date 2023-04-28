@@ -22,29 +22,29 @@ export default function Fromdata({
   handleClose,
 }) {
   const { handleSubmit, control } = useForm()
-  const [namedepartment, setNamedepartment] = useState([])
+  // const [namedepartment, setNamedepartment] = useState([])
 
   const navigate = useNavigate()
 
   console.log("selectuser in from data", type, selectuser)
-  const getDepartmentUser = () => {
-    // setIsReady(false)
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/department`)
-      .then((res) => {
-        setNamedepartment(res?.data?.rows)
-        console.log("test after", namedepartment)
-      })
-      .catch((error) => {
-        console.error("Error", error?.message)
-      })
+  // const getDepartmentUser = () => {
+  //   // setIsReady(false)
+  //   axios
+  //     .get(`${process.env.REACT_APP_API_URL}/department`)
+  //     .then((res) => {
+  //       setNamedepartment(res?.data?.rows)
+  //       console.log("test after", namedepartment)
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error", error?.message)
+  //     })
 
-    // setIsReady(true)
-  }
-  useEffect(() => {
-    getDepartmentUser()
-    return () => {}
-  }, [])
+  //   // setIsReady(true)
+  // }
+  // useEffect(() => {
+  //   getDepartmentUser()
+  //   return () => {}
+  // }, [])
 
   const postData = (data) => {
     axios
@@ -98,11 +98,11 @@ export default function Fromdata({
     }
   }
   return (
-    <div>
-      <div className="flex justify-center  ">
+    <div className="w-full">
+      <div className=" p-20">
         <Card sx={{ minWidth: 500 }}>
           <CardContent>
-            <h3>ข้อมูลพนักงาน</h3>
+            <h3>เพิ่มสินค้า</h3>
             <br />
             <form onSubmit={handleSubmit(submitData)}>
               <div>
@@ -115,7 +115,7 @@ export default function Fromdata({
                     <div className="grid grid-rows -">
                       <TextField
                         {...field}
-                        label="ชื่อ-นามสกุล "
+                        label="ชื่อสินค้า "
                         fullWidth
                         size={"small"}
                         helperText={"กรุณาใส่ข้อมูล"}
@@ -123,7 +123,7 @@ export default function Fromdata({
                     </div>
                   )}
                 />
-                <Controller
+                {/* <Controller
                   name="department"
                   control={control}
                   defaultValue={selectuser ? selectuser?.department : ""}
@@ -145,34 +145,19 @@ export default function Fromdata({
                       </FormControl>
                     </Box>
                   )}
-                />
+                /> */}
                 <Controller
-                  name="age"
+                  name="cost"
                   control={control}
                   defaultValue={selectuser ? selectuser?.age : ""}
                   rules={{ required: false }}
                   render={({ field }) => (
                     <TextField
                       {...field}
-                      label="อายุ"
+                      label="ราคา(บาท)"
                       fullWidth
                       size={"small"}
                       type="number"
-                      helperText={"กรุณาใส่ข้อมูล"}
-                    />
-                  )}
-                />
-                <Controller
-                  name="telephone"
-                  control={control}
-                  defaultValue={selectuser ? selectuser?.telephone : ""}
-                  rules={{ required: false }}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      label="เบอร์โทรศัพท์"
-                      fullWidth
-                      size={"small"}
                       helperText={"กรุณาใส่ข้อมูล"}
                     />
                   )}
@@ -187,7 +172,7 @@ export default function Fromdata({
         </Card>
       </div>
       <br />
-      <div className="flex justify-center">
+      <div className="flex  justify-center">
         <Link to="/">
           <Button
             variant="contained"

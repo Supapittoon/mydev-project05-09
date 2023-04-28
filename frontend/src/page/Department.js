@@ -87,87 +87,97 @@ export default function Home() {
   }
 
   return (
-    <div className="mx-10">
-      <div className=" ">
-        <h3 className="font-bold flex  justify-center  text-xl font-sans ...">
-          {" "}
-          ชื่อแผนก{" "}
-        </h3>
-        <div className="float-right ...  my-4 ">
-          <Link to="/Formdepartment">
-            <Button variant="contained" color="success" size="large">
-              {" "}
-              ADD
-            </Button>
-          </Link>
-        </div>
+    <div className="w-full  px-20">
+      <h3 className="font-bold flex  justify-center  text-2xl font-sans ...  py-10">
+        {" "}
+        รายชื่อลูกค้า{" "}
+      </h3>
+      <div className="float-right ...  my-4 ">
+        <Link to="/Formdepartment">
+          <Button variant="contained" color="success" size="large">
+            {" "}
+            เพิ่มลูกค้า
+          </Button>
+        </Link>
+      </div>
 
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow className="bg-blue-300  font-mono ...">
-                <TableCell>ลำดับที่</TableCell>
-                <TableCell>แผนก</TableCell>
-                <TableCell>ดำเนินการ</TableCell>
-              </TableRow>
-            </TableHead>
-            {_.map(usersdepartment, (eachData, index) => (
-              <TableBody>
-                <TableCell align="left">{index + 1}</TableCell>
-                <TableCell align="left">{eachData.name}</TableCell>
-                <TableCell align="left">
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow className="bg-blue-300  font-mono ...">
+              <TableCell>ลำดับที่</TableCell>
+              <TableCell>ชื่อ-นามสกุล</TableCell>
+              <TableCell>ดำเนินการ</TableCell>
+            </TableRow>
+          </TableHead>
+          {_.map(usersdepartment, (eachData, index) => (
+            <TableBody>
+              <TableCell align="left">{index + 1}</TableCell>
+              <TableCell align="left">{eachData.name}</TableCell>
+              <TableCell align="left">
+                <div className=" m-4 flex">
+                  <Link to="/DetailCustomer">
+                    <div className=" p-2">
+                      <Button color="error" variant="contained" size="medium">
+                        {" "}
+                        รายละเอียด{" "}
+                      </Button>
+                    </div>
+                  </Link>
                   <div className=" p-2">
                     <Button
+                      className="px-8"
                       color="error"
                       variant="contained"
-                      size="small"
+                      size="medium"
                       onClick={() => handleDeleteUser(eachData?._id)}
                     >
                       {" "}
-                      delete{" "}
+                      ลบ{" "}
                     </Button>
-
+                  </div>
+                  <div className=" p-2">
                     <Button
                       color="secondary"
                       variant="contained"
-                      size="small"
+                      size="mediuml"
                       onClick={() => {
                         setSelectuser(eachData)
                         handleClickOpen(eachData?._id)
                       }}
                     >
                       {" "}
-                      Edit{" "}
+                      แก้ไข{" "}
                     </Button>
-                    <Dialog
-                      open={open}
-                      onClose={handleClose}
-                      aria-labelledby="alert-dialog-title"
-                      aria-describedby="alert-dialog-description"
-                    >
-                      <DialogTitle id="alert-dialog-title">
-                        {"Edit  Form"}
-                      </DialogTitle>
-                      <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                          <Fromdepartment
-                            selectuser={selectuser}
-                            type={"edit"}
-                            handleClose={handleClose}
-                            isReady={isReady}
-                            setIsReady={setIsReady}
-                          />
-                        </DialogContentText>
-                      </DialogContent>
-                      <DialogActions></DialogActions>
-                    </Dialog>
                   </div>
-                </TableCell>
-              </TableBody>
-            ))}
-          </Table>
-        </TableContainer>
-      </div>
+                  <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogTitle id="alert-dialog-title">
+                      {"Edit  Form"}
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-description">
+                        <Fromdepartment
+                          selectuser={selectuser}
+                          type={"edit"}
+                          handleClose={handleClose}
+                          isReady={isReady}
+                          setIsReady={setIsReady}
+                        />
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions></DialogActions>
+                  </Dialog>
+                </div>
+              </TableCell>
+            </TableBody>
+          ))}
+        </Table>
+      </TableContainer>
     </div>
   )
 }
