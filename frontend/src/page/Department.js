@@ -29,8 +29,9 @@ export default function Home() {
   const [usersdepartment, setUsersdepartment] = useState([])
   const [selectuser, setSelectuser] = useState({})
   const [isReady, setIsReady] = useState(false)
+  const [selectdetail, setSelectDetail] = useState({})
 
-  console.log("selectuser", selectuser)
+  console.log("selectdetail", selectuser)
 
   const [open, setOpen] = React.useState(false)
 
@@ -116,9 +117,17 @@ export default function Home() {
               <TableCell align="left">{eachData.name}</TableCell>
               <TableCell align="left">
                 <div className=" m-4 flex">
-                  <Link to="/DetailCustomer">
+                  <Link to={`Detailcutomer/${eachData?._id} `}>
                     <div className=" p-2">
-                      <Button color="error" variant="contained" size="medium">
+                      <Button
+                        color="error"
+                        variant="contained"
+                        size="medium"
+                        onClick={() => {
+                          setSelectDetail(eachData)
+                          handleClickOpen(eachData?._id)
+                        }}
+                      >
                         {" "}
                         รายละเอียด{" "}
                       </Button>

@@ -9,6 +9,7 @@ import Formdepartment from "./page/Formdepartment"
 import Sidebar from "./Components/Sidebar"
 import Example from "../src/Components/Navbar"
 import Showdata from "./page/Showdata"
+import Detailcutomer from "./page/Detailcutomer"
 // import Navbar from "./Components/Navbar"
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
             <Route path="/Department" element={<Department />} />
             <Route path="/Formdepartment" element={<Formdepartment />} />
             <Route path="/Showdata" element={<Showdata />} />
+            <Route path="/Detailcutomer" element={<Detailcutomer />} />
             {/* </Route> */}
           </Routes>
         </div>
