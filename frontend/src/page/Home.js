@@ -1,178 +1,141 @@
-import React, { useState, useEffect } from "react"
-// import Navbar from "./Components/Navbar"
-// import Searchbox from "./Components/SearchBox"
-import axios from "axios"
-import _ from "lodash"
-import Table from "@mui/material/Table"
-import TableBody from "@mui/material/TableBody"
-import TableCell from "@mui/material/TableCell"
-import TableContainer from "@mui/material/TableContainer"
-import TableHead from "@mui/material/TableHead"
-import TableRow from "@mui/material/TableRow"
-import Paper from "@mui/material/Paper"
+import Box from "@mui/material/Box"
+import Card from "@mui/material/Card"
+import CardActions from "@mui/material/CardActions"
+import CardContent from "@mui/material/CardContent"
 import Button from "@mui/material/Button"
-// import { ReactDOM } from "react"
-// import { LinearProgress } from "@mui/material"
-import Fromdata from "../Components/Fromdata"
+import Typography from "@mui/material/Typography"
+import axios from "axios"
+import React, { useState, useEffect } from "react"
+import _ from "lodash"
+import Formpurchase from "../Components/Formpurchase"
 import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import DialogContentText from "@mui/material/DialogContentText"
 import DialogTitle from "@mui/material/DialogTitle"
-// import Navbar from "../Components/Navbar"
-import { Link } from "react-router-dom"
 
-//
+const bull = (
+  <Box
+    component="span"
+    sx={{ display: "-ms-flexbox", mx: "2px", transform: "scale(0.8)" }}
+  >
+    •
+  </Box>
+)
 
 export default function Home() {
-  const [users, setUsers] = useState([])
-  const [selectuser, setSelectuser] = useState({})
+  const [product, setProduct] = useState({})
   const [isReady, setIsReady] = useState(false)
-
-  console.log("selectuser", selectuser)
-  console.log("Data", users)
-
+  const [customer, setCustomer] = useState([])
   const [open, setOpen] = React.useState(false)
-
-  const getAllUser = () => {
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
+  console.log("customer", customer)
+  const getProduct = () => {
     // setIsReady(false)
     axios
-      .get(`${process.env.REACT_APP_API_URL}/user`)
+      .get(`${process.env.REACT_APP_API_URL}/Product`)
       .then((res) => {
-        setUsers(res?.data?.rows)
+        setProduct(res?.data?.rows)
         setIsReady(true)
-        console.log("User", res?.data?.rows)
+        // console.log("User", res?.data?.rows)
       })
       .catch((error) => {
         console.error("Error", error?.message)
       })
-
     // setIsReady(true)
   }
 
-  const handleClickOpen = () => {
-    setOpen(true)
+  const getCustomer = () => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/user`)
+      .then((res) => {
+        setCustomer(res?.data.rows)
+      })
+      .catch((error) => {
+        console.error("Error", error?.message)
+      })
   }
 
-  const handleClose = () => {
-    setOpen(false)
+  const CreatePurchase = (data) => {
+    try {
+      const confirm = window.confirm("ยืนยันลบข้อมูล")
+      if (confirm) {
+        axios
+          .post(`${process.env.REACT_APP_API_URL}/purchase`, { ...data })
+          .then((res) => {
+            console.log("history purchase", res?.data?.rows)
+            setIsReady(!isReady)
+          })
+          .catch((error) => {
+            console.error("Error", error?.message)
+          })
+      }
+    } catch (error) {}
   }
 
   useEffect(() => {
-    getAllUser()
-    return () => {}
-  }, [isReady])
+    getProduct()
+    getCustomer()
 
-  // if (!isReady) {
-  //   return (
-  //     <div>
-  //       <LinearProgress />
-  //     </div>
-  //   )
-  // }
-  // const handleEditUser =
-  const handleDeleteUser = (userId) => {
-    const confirm = window.confirm("ยืนยันการลบข้อมูล")
-    if (confirm) {
-      axios
-        .delete("http://localhost:3001/api/user/" + userId)
-        .then((res) => {
-          getAllUser()
-        })
-        .catch((error) => {
-          alert(error?.message)
-          console.log("Error", error?.message)
-        })
-    }
-  }
+    return () => {}
+  }, [open])
 
   return (
-    <div className=" w-full px-10">
-      <h3 className="font-bold flex  justify-center  my-4 text-xl font-sans ...">
-        {" "}
-        รายการสินค้า{" "}
-      </h3>
-      <div className="float-right ...  my-4 ">
-        <Link to="/Formdata">
-          <Button variant="contained" color="success" size="large">
-            {" "}
-            เพิ่มสินค้า
-          </Button>
-        </Link>
+    <div>
+      <div className="float-right">
+        <Button
+          color="secondary"
+          variant="contained"
+          size="small"
+          onClick={() => {
+            handleOpen()
+          }}
+        >
+          {" "}
+          เพิ่มคำสั่งซื้อ{" "}
+        </Button>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"คำสั่งซื้อสินค้า"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              <Formpurchase
+                handleClose={handleClose}
+                customer={customer}
+                product={product}
+                CreatePurchase={CreatePurchase}
+              />
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions></DialogActions>
+        </Dialog>
       </div>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow className="bg-cyan-600  font-mono ...">
-              <TableCell>ลำดับที่</TableCell>
-              {/* <TableCell>รูปภาพ</TableCell> */}
-              <TableCell>ชื่อสินค้า</TableCell>
-              <TableCell>ราคา</TableCell>
-              <TableCell>ดำเนินการ</TableCell>
-            </TableRow>
-          </TableHead>
-          {_.map(users, (eachData, index) => (
-            <TableBody>
-              <TableCell align="left">{index + 1}</TableCell>
-              <TableCell align="left">{eachData.name}</TableCell>
-              <TableCell align="left">{eachData.cost}</TableCell>
-              
-
-              {/* <TableCell align="left">
-                {eachData.department?.name || "-"}
-              </TableCell> */}
-              <TableCell align="left">
-                <div className=" p-2">
-                  <Button
-                    color="error"
-                    variant="contained"
-                    size="small"
-                    onClick={() => handleDeleteUser(eachData?._id)}
-                  >
-                    {" "}
-                    delete{" "}
-                  </Button>
-
-                  <Button
-                    color="secondary"
-                    variant="contained"
-                    size="small"
-                    onClick={() => {
-                      setSelectuser(eachData)
-                      handleClickOpen(eachData?._id)
-                    }}
-                  >
-                    {" "}
-                    Edit{" "}
-                  </Button>
-                  <Dialog
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                  >
-                    <DialogTitle id="alert-dialog-title">
-                      {"Edit  Form"}
-                    </DialogTitle>
-                    <DialogContent>
-                      <DialogContentText id="alert-dialog-description">
-                        <Fromdata
-                          selectuser={selectuser}
-                          type={"edit"}
-                          handleClose={handleClose}
-                          isReady={isReady}
-                          setIsReady={setIsReady}
-                        />
-                      </DialogContentText>
-                    </DialogContent>
-                    <DialogActions></DialogActions>
-                  </Dialog>
+      <div className="flex flex-wrap">
+        {_.map(product, (eachData, index) => (
+          <div className="p-2">
+            <Card>
+              <div class="px-6 py-4 ">
+                <div class="font-bold text-xl mb-2 flex justify-center">
+                  {eachData.name}
+                  <br />
+                  <br />
+                  <br />
+                  ราคา
+                  <br />
+                  {eachData.cost}
                 </div>
-              </TableCell>
-            </TableBody>
-          ))}
-        </Table>
-      </TableContainer>
+              </div>
+            </Card>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

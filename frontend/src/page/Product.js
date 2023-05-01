@@ -21,28 +21,27 @@ import DialogContentText from "@mui/material/DialogContentText"
 import DialogTitle from "@mui/material/DialogTitle"
 // import Navbar from "../Components/Navbar"
 import { Link } from "react-router-dom"
-import Department from "../page/Department"
-import Fromdepartment from "./Formdepartment"
+
 //
 
-export default function Home() {
-  const [usersdepartment, setUsersdepartment] = useState([])
+export default function Product() {
+  const [users, setUsers] = useState([])
   const [selectuser, setSelectuser] = useState({})
   const [isReady, setIsReady] = useState(false)
-  const [selectdetail, setSelectDetail] = useState({})
 
-  console.log("selectdetail", selectuser)
+  console.log("selectuser", selectuser)
+  console.log("Data", users)
 
   const [open, setOpen] = React.useState(false)
 
-  const getAllUserdepartment = () => {
+  const getAllUser = () => {
     // setIsReady(false)
     axios
-      .get(`${process.env.REACT_APP_API_URL}/department`)
+      .get(`${process.env.REACT_APP_API_URL}/Product`)
       .then((res) => {
-        setUsersdepartment(res?.data?.rows)
+        setUsers(res?.data?.rows)
         setIsReady(true)
-        console.log("Usersdepartment1", usersdepartment)
+        console.log("User", res?.data?.rows)
       })
       .catch((error) => {
         console.error("Error", error?.message)
@@ -60,7 +59,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    getAllUserdepartment()
+    getAllUser()
     return () => {}
   }, [isReady])
 
@@ -76,9 +75,9 @@ export default function Home() {
     const confirm = window.confirm("ยืนยันการลบข้อมูล")
     if (confirm) {
       axios
-        .delete("http://localhost:3001/api/department/" + userId)
+        .delete("http://localhost:3001/api/Product/" + userId)
         .then((res) => {
-          getAllUserdepartment()
+          getAllUser()
         })
         .catch((error) => {
           alert(error?.message)
@@ -88,77 +87,63 @@ export default function Home() {
   }
 
   return (
-    <div className="w-full  px-20">
-      <h3 className="font-bold flex  justify-center  text-2xl font-sans ...  py-10">
+    <div className=" w-full px-10">
+      <h3 className="font-bold flex  justify-center  my-4 text-xl font-sans ...">
         {" "}
-        รายชื่อลูกค้า{" "}
+        รายการสินค้า{" "}
       </h3>
       <div className="float-right ...  my-4 ">
-        <Link to="/Formdepartment">
+        <Link to="/Formdata">
           <Button variant="contained" color="success" size="large">
             {" "}
-            เพิ่มลูกค้า
+            เพิ่มสินค้า
           </Button>
         </Link>
       </div>
-
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
-            <TableRow className="bg-blue-300  font-mono ...">
+            <TableRow className="bg-cyan-600  font-mono ...">
               <TableCell>ลำดับที่</TableCell>
-              <TableCell>ชื่อ-นามสกุล</TableCell>
+              {/* <TableCell>รูปภาพ</TableCell> */}
+              <TableCell>ชื่อสินค้า</TableCell>
+              <TableCell>ราคา</TableCell>
               <TableCell>ดำเนินการ</TableCell>
             </TableRow>
           </TableHead>
-          {_.map(usersdepartment, (eachData, index) => (
+          {_.map(users, (eachData, index) => (
             <TableBody>
               <TableCell align="left">{index + 1}</TableCell>
               <TableCell align="left">{eachData.name}</TableCell>
+              <TableCell align="left">{eachData.cost}</TableCell>
+
+              {/* <TableCell align="left">
+                {eachData.department?.name || "-"}
+              </TableCell> */}
               <TableCell align="left">
-                <div className=" m-4 flex">
-                  <Link to={`Detailcutomer/${eachData?._id} `}>
-                    <div className=" p-2">
-                      <Button
-                        color="error"
-                        variant="contained"
-                        size="medium"
-                        onClick={() => {
-                          setSelectDetail(eachData)
-                          handleClickOpen(eachData?._id)
-                        }}
-                      >
-                        {" "}
-                        รายละเอียด{" "}
-                      </Button>
-                    </div>
-                  </Link>
-                  <div className=" p-2">
-                    <Button
-                      className="px-8"
-                      color="error"
-                      variant="contained"
-                      size="medium"
-                      onClick={() => handleDeleteUser(eachData?._id)}
-                    >
-                      {" "}
-                      ลบ{" "}
-                    </Button>
-                  </div>
-                  <div className=" p-2">
-                    <Button
-                      color="secondary"
-                      variant="contained"
-                      size="mediuml"
-                      onClick={() => {
-                        setSelectuser(eachData)
-                        handleClickOpen(eachData?._id)
-                      }}
-                    >
-                      {" "}
-                      แก้ไข{" "}
-                    </Button>
-                  </div>
+                <div className=" p-2">
+                  <Button
+                    color="error"
+                    variant="contained"
+                    size="small"
+                    onClick={() => handleDeleteUser(eachData?._id)}
+                  >
+                    {" "}
+                    delete{" "}
+                  </Button>
+
+                  <Button
+                    color="secondary"
+                    variant="contained"
+                    size="small"
+                    onClick={() => {
+                      setSelectuser(eachData)
+                      handleClickOpen(eachData?._id)
+                    }}
+                  >
+                    {" "}
+                    Edit{" "}
+                  </Button>
                   <Dialog
                     open={open}
                     onClose={handleClose}
@@ -170,7 +155,7 @@ export default function Home() {
                     </DialogTitle>
                     <DialogContent>
                       <DialogContentText id="alert-dialog-description">
-                        <Fromdepartment
+                        <Fromdata
                           selectuser={selectuser}
                           type={"edit"}
                           handleClose={handleClose}

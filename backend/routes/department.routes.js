@@ -45,6 +45,6 @@ router.put("/:id", async (req, res) => {
   } catch (error) {
     console.log(error.message)
     res.status(400).json({ error })
-  } 
+  }
 })
 module.exports = router

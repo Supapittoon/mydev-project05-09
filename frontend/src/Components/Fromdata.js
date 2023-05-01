@@ -48,7 +48,7 @@ export default function Fromdata({
 
   const postData = (data) => {
     axios
-      .post(`${process.env.REACT_APP_API_URL}/user`, { ...data })
+      .post(`${process.env.REACT_APP_API_URL}/Product`, { ...data })
       .then((res) => {
         console.log("User", res?.data?.rows)
         setIsReady(!isReady)
@@ -59,7 +59,7 @@ export default function Fromdata({
   }
   const getData = () => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/user`)
+      .get(`${process.env.REACT_APP_API_URL}/Product`)
       .then((res) => {
         setUsers(res?.data?.rows)
         setIsReady(true)
@@ -71,7 +71,7 @@ export default function Fromdata({
   }
   const editData = (data) => {
     axios
-      .put(`${process.env.REACT_APP_API_URL}/user/` + selectuser?._id, {
+      .put(`${process.env.REACT_APP_API_URL}/Product/` + selectuser?._id, {
         ...data,
       })
       .then((res) => {
